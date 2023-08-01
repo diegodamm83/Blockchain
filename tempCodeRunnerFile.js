@@ -1,0 +1,1 @@
+(JSON.stringify(ultiCoin, null, 4)
