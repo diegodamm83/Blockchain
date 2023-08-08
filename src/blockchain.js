@@ -13,8 +13,8 @@ class Transaction{
     }
 
     signTransaction(signingKey){ // keyGenerator object signs hash from transaction
-        if(signingKey.getPublic('hex') !== this.fromAddress){                   // fromAddress must equal getPublic in hex format
-            throw new Error('You cannot sign transactions from other wallets');
+        if(signingKey.getPublic('hex') !== this.fromAddress){  // fromAddress must equal getPublic in hex format
+            throw new Error('You cannot sign transactions for other wallets');
         }
         const hashTx = this.calculateHash();
         const sig = signingKey.sign(hashTx, 'base64');
