@@ -13,7 +13,7 @@ ultiCoin.addTransaction(tr1);
 console.log("\n Miner is cooking...");
 ultiCoin.minePendingTransactions(myWalletAddress);
 
-console.log("Alex has a balance of " + ultiCoin.getBalanceOfAddress(myWalletAddress));
+console.log("Alex now has a balance of " + ultiCoin.getBalanceOfAddress(myWalletAddress));
 
 console.log('Is blockchain valid? ' + ultiCoin.isChainValid());
 
