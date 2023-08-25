@@ -2,26 +2,31 @@ const SHA256 = require('crypto-js/sha256');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 
-class Transaction{
+class Transaction{ 
+    // Transaction Constructor includes the amount to be given, address of the person who gives and who receives the coins 
     constructor(fromAddress, toAddress, amount){
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.amount = amount;
     }
     calculateHash(){
+        // Function to calculates hash with SHA256 with the To address and From address and amount of each transaction
         return SHA256(this.fromAddress + this.toAddress + this.amount).toString();
     }
 
-    signTransaction(signingKey){ // keyGenerator object signs hash from transaction
+    signTransaction(signingKey){ 
+        /* keyGenerator object signs hash from transaction since you can only give coins with wallet
+        that matches your key */
         if(signingKey.getPublic('hex') !== this.fromAddress){  // fromAddress must equal getPublic in hex format
             throw new Error('You cannot sign transactions for other wallets');
         }
-        const hashTx = this.calculateHash();
-        const sig = signingKey.sign(hashTx, 'base64');
-        this.signature = sig.toDER('hex');
+        const hashTx = this.calculateHash(); // Creates Hash
+        const sig = signingKey.sign(hashTx, 'base64'); // Signs the hash in base64
+        this.signature = sig.toDER('hex'); // Store signature in transaction object
     }
     isValid(){
-        if (this.fromAddress === null) return true; // In case of miner reward
+        if (this.fromAddress === null) return true; /* In case of miner reward, since it doesnt come from any address, 
+        we assume its a miner*/
 
         if (!this.signature || this.signature.length === 0){ // Transaction is not valid because it does not contain a signature
             throw new Error("No signature in this transaction!");
